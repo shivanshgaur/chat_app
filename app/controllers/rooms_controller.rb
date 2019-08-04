@@ -2,7 +2,7 @@ class RoomsController < ApplicationController
   before_action :load_entities
 
   def index
-    @rooms = current_user.rooms
+    @rooms = Room.all
   end
 
   def new
