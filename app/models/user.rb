@@ -29,4 +29,9 @@ class User < ApplicationRecord
   has_many :rooms, through: :user_rooms
 
   validates :username, uniqueness: true, presence: true
+
+  def gravatar_url(user)
+    gravatar_id = Digest::MD5::hexdigest(email).downcase
+    url = "https://gravatar.com/avatar/#{gravatar_id}.png"
+  end
 end
