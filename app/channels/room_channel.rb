@@ -1,5 +1,7 @@
 class RoomChannel < ApplicationCable::Channel
   def subscribed
+    return if params[:room].blank?
+
     room = Room.find params[:room]
     stream_for room
 

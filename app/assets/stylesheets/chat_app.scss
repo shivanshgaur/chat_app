@@ -1,3 +1,5 @@
+$green: green;
+
 .avatar {
   max-height:30px;
   border-radius: 15px;
@@ -36,10 +38,24 @@
 
   .message-content {
     padding: 5px;
+    border: 1px solid $green;
+    border-radius: 5px;
+    background: lighten($green, 10%);
+    color: $white;
+    float: left;
+    width: 50%;
+    word-break: break-all;
+  }
+
+  .message-content-1 {
+    padding: 5px;
     border: 1px solid $primary;
     border-radius: 5px;
-    background: lighten($primary, 10%);
+    background: lighten($primary, 0%);
     color: $white;
+    float: right;
+    width: 50%;
+    word-break: break-all;
   }
 
   & + .chat-message-container {

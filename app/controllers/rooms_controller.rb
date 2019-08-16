@@ -2,19 +2,11 @@ class RoomsController < ApplicationController
   before_action :load_entities
 
   def index
-    @rooms = Room.all
-  end
-
-  def new
-    @room = Room.new
-  end
-
-  def edit
   end
 
   def show
-    @room_message = RoomMessage.new room: @room
-    @room_messages = @room.room_messages.includes(:user)
+    @room_message = RoomMessage.new room: @room, user: current_user
+    @room_messages = @room.room_messages.includes(:user).last(20)
   end
 
   def create
@@ -42,8 +34,16 @@ class RoomsController < ApplicationController
   private
 
   def load_entities
-    @rooms = Room.all
-    @room = Room.find(params[:id]) if params[:id]
+    @room = Room.joins('INNER JOIN user_rooms ON rooms.id = user_rooms.room_id INNER JOIN user_rooms
+      as ur ON rooms.id = ur.room_id')
+      .where('user_rooms.user_id = ? AND ur.user_id = ?', params[:id], current_user.id).last
+    @users = User.all - [current_user]
+
+    if @room.blank?
+      @room = Room.new(name: 'New room')
+      # passing user_id as @chat_room_user_id here
+      @chat_room_user_id = params[:id]
+    end
   end
 
   def permitted_parameters
