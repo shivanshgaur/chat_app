@@ -29,3 +29,8 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+app/.DS_Store
+app/views/.DS_Store
+app/views/layouts/.DS_Store
+.readme

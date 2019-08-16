@@ -1,0 +1,17 @@
+<% unless @room.id %>
+  <div class="mb-3">
+    <span>Your available chats</span>
+  </div>
+<% end %>
+
+<% if @users.present? %>
+<nav class="nav flex-column">
+  <% @users.each do |user| %>
+  <%= link_to user.username, room_path(user.id), class: "nav-link room-nav-link" %>
+  <% end %>
+</nav>
+<% else %>
+<div class="text-muted">
+  There are no chats
+</div>
+<% end %>

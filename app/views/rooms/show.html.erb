@@ -1,0 +1,74 @@
+<% if @room.id %>
+  <h1>
+    <%= (@room.users - [current_user]).last.try(:username) %>
+  </h1>
+<% end %>
+
+<div class="row">
+  <div class="col-12 col-md-3">
+    <%= render partial: 'rooms' %>
+  </div>
+
+  <div class="col">
+    <div class="chat" data-channel-subscribe="room" data-room-id="<%= @room.id %>" data-current-user-id="<%= current_user.id %>">
+      <% @room_messages.each do |room_message| %>
+        <div class="chat-message-container">
+          <div class="row no-gutters">
+            <div class="col">
+              <% if room_message.user_id == current_user.id %>
+                <% @class_name = 'message-content-1'%>
+              <% else %>
+                <% @class_name = 'message-content' %>
+              <% end %>
+              <div class="<%= @class_name %>">
+                <p class="mb-1">
+                  <%= room_message.message %>
+                </p>
+
+                <div class="text-right">
+                  <small>
+                    <%= room_message.created_at.strftime("%a, %e %b %Y %I:%M%p") %>
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <%= simple_form_for @room_message, remote: true do |form| %>
+      <div class="input-group mb-3">
+        <%= form.input :message, as: :string,
+                                 wrapper: false,
+                                 label: false,
+                                 input_html: {
+                                   class: 'chat-input'
+                                 } %>
+        <div class="input-group-append">
+          <%= form.submit "Send", class: 'btn btn-primary chat-input' %>
+          <div id="sound"></div>
+        </div>
+      </div>
+
+      <%= form.input :room_id, as: :hidden %>
+      <%= form.hidden_field :user_id, value: @chat_room_user_id %>
+    <% end %>
+  </div>
+</div>
+
+<div class="d-none" data-role="message-template">
+  <div class="chat-message-container">
+    <div class="row no-gutters">
+      <div class="col">
+        <div class="message-content">
+          <p class="mb-1" data-role="message-text"></p>
+
+          <div class="text-right">
+            <small data-role="message-date"></small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
