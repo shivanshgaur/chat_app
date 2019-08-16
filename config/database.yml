@@ -26,4 +26,5 @@ test:
 
 production:
   <<: *default
+  database: "heroku_a2886d2d781847a"
   host: <%= ENV.fetch("CLEARDB_DATABASE_URL") %>
